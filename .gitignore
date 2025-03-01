@@ -1,0 +1,41 @@
+## Python
+__pycache__/
+*.pyc
+
+## Environment variables
+.env
+
+## Logs
+logs/
+
+## Data
+data/
+
+
+## Virtual environment
+venv/
+
+## IDE
+.idea/
+
+## VSCode
+.vscode/
+
+## PyCharm
+.PyCharm/
+
+## Cursor
+.cursorrules    
+
+## Python version
+.python-version
+
+## Node version
+.node-version
+
+
+
+
+
+
+
