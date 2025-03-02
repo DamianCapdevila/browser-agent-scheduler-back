@@ -8,9 +8,17 @@ dependencies = [
     "langchain-openai",
     "browser-use",
     "python-dotenv",
+    "fastapi",
+    "fastapi[standard]",
+    "uvicorn",
     "asyncio",
-    "flask",
-    "flask-cors",
-    "APScheduler",  # Add this line
-    "pytz",         # Add this line
+    "pydantic",
+    "pydantic-settings",
+    "pytz",
+    "apscheduler",
+    "requests",
+    "supabase",
+    "pydantic",
+    "pyjwt",
+    "fastapi-jwt-auth",
 ]
