@@ -1,6 +1,7 @@
 
-from app.schemas.tasks import TaskCreate, TaskResponse
-from supabase import create_client, Client, ClientOptions
+from app.schemas.tasks import TaskCreate, TaskResponse, TaskUpdate
+from supabase import create_client, Client
+from fastapi.encoders import jsonable_encoder
 from app.config import settings
 import logging
 
@@ -29,7 +30,7 @@ async def get_task_by_id(task_id: str, auth_token: str = None) -> TaskResponse:
 
 async def insert_task_into_db(task: TaskCreate, auth_token: str):
     supabase = get_supabase_client(auth_token)
-    response = supabase.table("tasks").insert(task.model_dump(by_alias=False)).execute()
+    response = supabase.table("tasks").insert(jsonable_encoder(task, by_alias=False)).execute()
 
     if response.data and isinstance(response.data, list) and len(response.data) > 0:
         return response.data[0]    
@@ -43,9 +44,9 @@ async def delete_task_from_db(task_id: str, auth_token: str):
         return response.data[0] 
     return None
 
-async def update_task_in_db(task_id: str, task_data, auth_token: str):
+async def update_task_in_db(task: TaskUpdate, auth_token: str):
     supabase = get_supabase_client(auth_token)
-    response = supabase.table("tasks").update(task_data.model_dump(by_alias=False)).eq("id", task_id).execute()
+    response = supabase.table("tasks").update(jsonable_encoder(task, by_alias=False)).eq("id", task.id).execute()
     
     if response.data and isinstance(response.data, list) and len(response.data) > 0:
         return response.data[0] 

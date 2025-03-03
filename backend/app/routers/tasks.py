@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from app.external_services.supabase import (
     fetch_tasks_by_user,
     insert_task_into_db,
@@ -11,7 +11,6 @@ from app.schemas.tasks import TaskResponse, TaskCreate, TaskUpdate
 from app.dependencies import get_auth_token
 from fastapi.security import HTTPBearer
 import logging
-
 logger = logging.getLogger("app.tasks")
 
 security = HTTPBearer()
@@ -24,7 +23,7 @@ async def get_tasks(user_id: str, auth_token: str = Depends(get_auth_token)):
     return tasks
 
 
-@router.post("/", response_model=TaskResponse)
+@router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 async def create_task(task: TaskCreate, auth_token: str = Depends(get_auth_token)):
     new_task = await insert_task_into_db(task, auth_token)
     if not new_task:
