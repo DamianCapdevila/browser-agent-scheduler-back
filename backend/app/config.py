@@ -4,7 +4,7 @@ import os
 
 
 class Settings(BaseSettings):
-    JWT_SECRET: str = os.getenv("JWT_SECRET")  # Replace with your actual secret or load from env
+    JWT_SECRET: str = os.getenv("JWT_SECRET")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
     
     # Additional configuration for Supabase (or other services)

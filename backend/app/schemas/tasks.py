@@ -13,12 +13,20 @@ class TaskBase(BaseModel):
     error: Optional[str] = None
 
     class Config:
-        allow_population_by_field_name = True
-        orm_mode = True
+        from_attributes = True
+        populate_by_name = True
 
 class TaskCreate(TaskBase):
     pass
 
+class TaskUpdate(TaskBase):
+    task: str = "Unknown task"
+    scheduled_time: datetime = Field(alias="scheduledTime")
+    timezone: str = "UTC"
+    status: str = "scheduled"
+    result: Optional[str] = None
+    error: Optional[str] = None
+    
 class TaskResponse(TaskBase):
     id: str
     user_id: str
