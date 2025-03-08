@@ -10,7 +10,9 @@ class Settings(BaseSettings):
     # Additional configuration for Supabase (or other services)
     SUPABASE_URL: str = os.getenv("SUPABASE_URL")
     SUPABASE_KEY: str = os.getenv("SUPABASE_KEY")
-    
+    SUPABASE_ADMIN_KEY: str = os.getenv("SUPABASE_ADMIN_KEY")
+    PASSPHRASE: str = os.getenv("PASSPHRASE")
+
     class Config:
         env_file = ".env"  # Load environment variables from a .env file if present
 

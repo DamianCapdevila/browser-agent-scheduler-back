@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Request
 import logging
 import time
-from app.routers import tasks, users
+
+import uvicorn
+from .routers import tasks, users
 from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger("app.main")
@@ -50,11 +52,6 @@ async def root():
     logger.debug("Root endpoint called")
     return {"message": "Hello, World!"}
 
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 

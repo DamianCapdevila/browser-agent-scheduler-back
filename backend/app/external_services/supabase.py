@@ -3,12 +3,9 @@ from app.schemas.tasks import TaskCreate, TaskResponse, TaskUpdate
 from supabase import create_client, Client
 from fastapi.encoders import jsonable_encoder
 from app.config import settings
-import logging
+from app.schemas.user_api_keys import UserApiKeyRead
 
-logger = logging.getLogger("app.external_services.supabase")
 
-url: str = settings.SUPABASE_URL
-key: str = settings.SUPABASE_KEY
 
 def get_supabase_client(token: str) -> Client:
     supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
@@ -52,5 +49,21 @@ async def update_task_in_db(task: TaskUpdate, auth_token: str):
         return response.data[0] 
     return None
 
+
+# Admin functions
+
+def get_supabase_admin_client() -> Client:
+    supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_ADMIN_KEY)
+    return supabase
+
+async def fetch_tasks_by_user_id(user_id: str) -> list[TaskResponse]:
+    supabase = get_supabase_admin_client()
+    response = supabase.table("tasks").select("*").eq("user_id", user_id).execute()
+    return response.data
+
+async def fetch_user_encrypted_api_key(user_id: str) -> list[UserApiKeyRead]:
+    supabase = get_supabase_admin_client()
+    response = supabase.table("user_api_keys").select("*").eq("user_id", user_id).execute()
+    return response.data
 
 
