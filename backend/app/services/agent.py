@@ -1,5 +1,5 @@
-
-
+from browser_use import Agent, SystemPrompt
+from langchain_openai import ChatOpenAI
 async def run_agent(api_key: str, task: str):
     try:
         llm = ChatOpenAI(
@@ -21,8 +21,6 @@ async def run_agent(api_key: str, task: str):
     except Exception as e:
         print(f"Error in run_agent: {str(e)}")
         raise
-
-from browser_use import Agent, SystemPrompt
 
 class MySystemPrompt(SystemPrompt):
     def important_rules(self) -> str:
