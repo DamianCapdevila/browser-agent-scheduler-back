@@ -16,7 +16,6 @@ class TaskBase(BaseModel):
         populate_by_name = True
 
 
-
 class TaskCreate(TaskBase):
     user_id: UUID = Field(alias="userId")
 
@@ -24,6 +23,15 @@ class TaskUpdate(TaskBase):
     id: UUID
     task: str = "Unknown task"
     scheduled_time: datetime = Field(alias="scheduledTime")
+    timezone: str = "UTC"
+    status: str = "scheduled"
+    result: Optional[str] = None
+    error: Optional[str] = None
+    
+class TaskRun(TaskBase):
+    id: UUID
+    task: str = "Unknown task"
+    scheduled_time: datetime
     timezone: str = "UTC"
     status: str = "scheduled"
     result: Optional[str] = None

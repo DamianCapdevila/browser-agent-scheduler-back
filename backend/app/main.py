@@ -48,9 +48,7 @@ app.include_router(tasks.router)
 
 @app.get("/")
 async def root():
-    print("Root endpoint called")  # Direct print
-    logger.debug("Root endpoint called")
-    return {"message": "Hello, World!"}
+    return {"message": "We are running!"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
