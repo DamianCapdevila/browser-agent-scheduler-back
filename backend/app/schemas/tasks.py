@@ -36,6 +36,6 @@ class TaskResponse(TaskBase):
     scheduled_time: datetime
     timezone: str
     status: str
-    result: str
-    error: str
+    result: str | None
+    error: str | None
 
