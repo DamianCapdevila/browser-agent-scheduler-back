@@ -5,7 +5,7 @@ from uuid import UUID
 
 class TaskBase(BaseModel):
     task: str = "Unknown task"
-    scheduled_time: datetime = Field(alias="scheduledTime")
+    scheduled_time: datetime
     timezone: str = "UTC"
     status: str = "scheduled"
     result: Optional[str] = None
@@ -22,7 +22,7 @@ class TaskCreate(TaskBase):
 class TaskUpdate(TaskBase):
     id: UUID
     task: str = "Unknown task"
-    scheduled_time: datetime = Field(alias="scheduledTime")
+    scheduled_time: datetime
     timezone: str = "UTC"
     status: str = "scheduled"
     result: Optional[str] = None

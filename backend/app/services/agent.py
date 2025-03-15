@@ -1,5 +1,6 @@
 from browser_use import Agent, SystemPrompt, Browser, BrowserConfig
 from langchain_openai import ChatOpenAI
+import json
 
 config = BrowserConfig(
     headless=True,
@@ -23,19 +24,14 @@ async def run_agent(api_key: str, task: str):
             llm=llm,
             planner_llm=planner,
             system_prompt_class=MySystemPrompt,
+            max_failures=20,
             browser=browser
         )
-        result = await agent.run()
         
-        # Convert the result to a serializable format
-        if hasattr(result, 'to_dict'):
-            return result.to_dict()
-        elif hasattr(result, '__dict__'):
-            return result.__dict__
-        else:
-            # If it's not an object with a to_dict method or __dict__, 
-            # convert it to a string representation
-            return str(result)
+        history = await agent.run()
+        result = history.final_result()
+        
+        return json.dumps(result)
     except Exception as e:
         print(f"Error in run_agent: {str(e)}")
         raise
@@ -47,9 +43,10 @@ class MySystemPrompt(SystemPrompt):
 
         # Add your custom rules
         new_rules = """
-            2 - Don't hallucinate.
-            3 - MOST IMPORTANT RULE:
-                Always try to limit the number of requests you make, otherwise, the website will block us!
+            1 - Don't hallucinate.
+            2 - If you can't find the information after the max number of steps, say "I don't know".
+            3 - If you are stuck after repeating the action many times, try something different.
+            4 - Accept cookies when necessary.
         """
 
         # Make sure to use this pattern otherwise the exiting rules will be lost

@@ -13,7 +13,7 @@ def get_supabase_admin_client() -> Client:
 
 async def fetch_all_tasks() -> list[TaskResponse]:
     supabase = get_supabase_admin_client()
-    response = supabase.table("tasks").select("*").order("scheduled_time", desc=True).execute()
+    response = supabase.table("tasks").select("*").eq("status", "scheduled").order("scheduled_time", desc=True).execute()
     return response.data
 
 async def fetch_user_encrypted_api_key(user_id: str) -> UserApiKeyRead:
@@ -23,6 +23,6 @@ async def fetch_user_encrypted_api_key(user_id: str) -> UserApiKeyRead:
 
 async def update_task_by_id(task: TaskUpdate) -> TaskResponse:
     supabase = get_supabase_admin_client()
-    response = supabase.table("tasks").update(task).eq("id", task.id).execute()
+    response = supabase.table("tasks").update(jsonable_encoder(task)).eq("id", task.id).execute()
     return response.data
 
