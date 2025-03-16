@@ -1,0 +1,35 @@
+version: "3.11"
+
+services:
+  api:
+    build: .
+    container_name: fastapi_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+
+  worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A app.services.celery worker --loglevel=info
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+
+volumes:
+  rabbitmq_data:
+
+
