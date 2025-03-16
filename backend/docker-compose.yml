@@ -10,6 +10,7 @@ services:
       - rabbitmq
     env_file:
       - .env
+    restart: always
 
   worker:
     build: .
@@ -19,6 +20,7 @@ services:
       - rabbitmq
     env_file:
       - .env
+    restart: always
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -28,6 +30,9 @@ services:
       - "15672:15672"
     env_file:
       - .env
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: always
 
 volumes:
   rabbitmq_data:
